@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 public class MainScreen extends AppCompatActivity {
     public final static String EXTRA_MESSAGE = "david_abad.boardgameswishlist.MESSAGE";
@@ -27,8 +28,8 @@ public class MainScreen extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent intent = new Intent(MainScreen.this, AddBoardgame.class);
+                startActivity(intent);
             }
         });
 

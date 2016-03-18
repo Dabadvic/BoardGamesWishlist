@@ -1,7 +1,9 @@
 <resources>
     <string name="app_name">Boardgames Wishlist</string>
     <string name="action_settings">Settings</string>
-    <string name="edit_message">Enter a message</string>
-    <string name="button_send">Send</string>
-    <string name="title_activity_display_message">My Message</string>
+    <string name="save">Save</string>
+    <string name="add_boardgame"><u>Enter values</u></string>
+    <string name="title_activity_add_boardgame">Add a boardgame</string>
+    <string name="name">Name</string>
+    <string name="wish">I want it...</string>
 </resources>
