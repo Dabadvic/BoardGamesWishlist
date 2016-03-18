@@ -14,6 +14,10 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class MainScreen extends AppCompatActivity {
     public final static String EXTRA_MESSAGE = "david_abad.boardgameswishlist.MESSAGE";
 
@@ -34,12 +38,14 @@ public class MainScreen extends AppCompatActivity {
         });
 
         // List of items
-        String[] items = {
-                "Agricola", "Android Netrunner", "Cacao", "Quantum"
-        };
+        //String items = "";//"Agricola, Android Netrunner, Cacao, Quantum";
+        //List<String> boardgames = Arrays.asList(items.split(","));
+
+        BoardgamesDBHelper db = new BoardgamesDBHelper(this);
+        List<String> boardgames = db.getAllGamesNames();
 
         // Create an array adapter
-        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, items);
+        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, boardgames);
 
         // Create a ListView object
         ListView listView = (ListView) findViewById(R.id.gameslist);
