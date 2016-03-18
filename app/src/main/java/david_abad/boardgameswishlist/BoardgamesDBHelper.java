@@ -1,5 +1,6 @@
 package david_abad.boardgameswishlist;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -16,13 +17,13 @@ public class BoardgamesDBHelper extends SQLiteOpenHelper {
     private static final String SQL_CREATE_ENTRIES =
             "CREATE TABLE " + BoardgameEntry.TABLE_NAME + " (" +
                     BoardgameEntry._ID + " INTEGER PRIMARY KEY," +
-                    BoardgameEntry.COLUMN_NAME +        TEXT_TYPE +     COMMA_SEP +
-                    BoardgameEntry.COLUMN_WISH_LEVEL +  INTEGER_TYPE +  COMMA_SEP +
-                    BoardgameEntry.COLUMN_SCORE +       REAL_TYPE +     COMMA_SEP +
-                    BoardgameEntry.COLUMN_CATEGORIES +  TEXT_TYPE +     COMMA_SEP +
-                    BoardgameEntry.COLUMN_MIN_PLAYERS + INTEGER_TYPE +  COMMA_SEP +
-                    BoardgameEntry.COLUMN_OWN +         INTEGER_TYPE +  COMMA_SEP + //Booleano 0-false 1-true
-                    " )";
+                    BoardgameEntry.COLUMN_NAME +        TEXT_TYPE + "NOT NULL UNIQUE" +     COMMA_SEP +
+                    BoardgameEntry.COLUMN_WISH_LEVEL +  INTEGER_TYPE + "NOT NULL" +         COMMA_SEP +
+                    BoardgameEntry.COLUMN_SCORE +       REAL_TYPE +                         COMMA_SEP +
+                    BoardgameEntry.COLUMN_CATEGORIES +  TEXT_TYPE +                         COMMA_SEP +
+                    BoardgameEntry.COLUMN_MIN_PLAYERS + INTEGER_TYPE +                      COMMA_SEP +
+                    BoardgameEntry.COLUMN_OWN +         INTEGER_TYPE + //Boolean 0-false 1-true
+                    " );";
 
     private static final String SQL_DELETE_ENTRIES =
             "DROP TABLE IF EXISTS " + BoardgameEntry.TABLE_NAME;
@@ -45,6 +46,24 @@ public class BoardgamesDBHelper extends SQLiteOpenHelper {
     }
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         onUpgrade(db, oldVersion, newVersion);
+    }
+
+    public boolean addBoardgame(Boardgame game) {
+        // Gets the data repository in write mode
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // Create a new map of values, where column names are the keys
+        ContentValues values = new ContentValues();
+        values.put(BoardgameEntry.COLUMN_NAME, game.getName());
+        values.put(BoardgameEntry.COLUMN_WISH_LEVEL, game.getWish_level());
+
+        // Insert the new row, returning the primary key value of the new row
+        long newRowId;
+        newRowId = db.insert(BoardgameEntry.TABLE_NAME, null, values);
+        db.close();
+
+        // If the new row ID is more than 0, that means it has been a successful insert
+        return (newRowId >= 0);
     }
 
 

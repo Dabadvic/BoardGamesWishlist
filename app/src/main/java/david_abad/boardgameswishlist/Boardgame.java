@@ -1,5 +1,8 @@
 package david_abad.boardgameswishlist;
 
+import android.content.ContentValues;
+import android.database.sqlite.SQLiteDatabase;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -71,4 +74,48 @@ public class Boardgame {
         categories = Arrays.asList(_categories.split(","));
     }
 
+
+    public String getName() {
+        return name;
+    }
+
+    public int getWish_level() {
+        return wish_level;
+    }
+
+    public float getScore() {
+        return score;
+    }
+
+    public List<String> getCategories() {
+        return categories;
+    }
+
+    public int getMin_players() {
+        return min_players;
+    }
+
+    public boolean isOwn() {
+        return own;
+    }
+
+    public String getCategoriesLine() {
+        String line = "";
+        for (String category : categories)
+            line = line + ", " + category;
+
+        return line;
+    }
+
+    /**
+     * Returns a string with the main information of the boardgame.
+     *
+     * @return String with name and wish level.
+     */
+    public String toString() {
+        String line;
+        line = "Name: " + name + ", wish: " + wish_level;
+
+        return line;
+    }
 }
