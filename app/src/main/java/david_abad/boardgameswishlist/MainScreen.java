@@ -36,11 +36,13 @@ public class MainScreen extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
 
-        // List of items
-        //String items = "";//"Agricola, Android Netrunner, Cacao, Quantum";
-        //List<String> boardgames = Arrays.asList(items.split(","));
+    @Override
+    public void onResume() {
+        super.onResume();
 
+        // Refresh boardgames list
         BoardgamesDBHelper db = new BoardgamesDBHelper(this);
         List<String> boardgames = db.getAllGamesNames();
 

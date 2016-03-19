@@ -6,4 +6,5 @@
     <string name="title_activity_add_boardgame">Add a boardgame</string>
     <string name="name">Name</string>
     <string name="wish">I want it...</string>
+    <string name="action_about">About</string>
 </resources>
