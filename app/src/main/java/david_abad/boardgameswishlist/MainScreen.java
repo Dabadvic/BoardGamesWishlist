@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.content.Intent;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -53,6 +54,15 @@ public class MainScreen extends AppCompatActivity {
         ListView listView = (ListView) findViewById(R.id.gameslist);
         // set the adapter to the view
         listView.setAdapter(adapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                Intent intent = new Intent(MainScreen.this, BoardGameDetails.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override

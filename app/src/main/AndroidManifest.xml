@@ -21,7 +21,16 @@
         <activity
             android:name=".AddBoardgame"
             android:label="@string/title_activity_add_boardgame"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".BoardGameDetails"
+            android:label="@string/title_activity_board_game_details"
+            android:parentActivityName=".MainScreen"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="david_abad.boardgameswishlist.MainScreen" />
+        </activity>
     </application>
 
 </manifest>
