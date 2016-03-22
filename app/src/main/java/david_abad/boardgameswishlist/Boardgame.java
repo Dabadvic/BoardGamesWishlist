@@ -70,8 +70,12 @@ public class Boardgame {
         min_players = _min_players;
         own = _own;
 
-        // Extract the categories
-        categories = Arrays.asList(_categories.split(","));
+        // Extract the categories if not null
+        if (_categories != null) {
+            categories = Arrays.asList(_categories.split(","));
+        } else {
+            categories = null;
+        }
     }
 
 

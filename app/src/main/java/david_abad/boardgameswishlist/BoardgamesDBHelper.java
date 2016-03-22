@@ -26,6 +26,8 @@ public class BoardgamesDBHelper extends SQLiteOpenHelper {
     private static final String[] COLUMNS_BASIC = {COLUMN_ID,COLUMN_NAME,COLUMN_WISH_LEVEL};
     private static final String[] COLUMNS_ALL = {COLUMN_ID,COLUMN_NAME,COLUMN_WISH_LEVEL,
             COLUMN_SCORE,COLUMN_CATEGORIES,COLUMN_MIN_PLAYERS,COLUMN_OWN};
+    private static final String[] COLUMNS_ALL_BUT_ID = {COLUMN_NAME,COLUMN_WISH_LEVEL,
+            COLUMN_SCORE,COLUMN_CATEGORIES,COLUMN_MIN_PLAYERS,COLUMN_OWN};
 
     private static final String TEXT_TYPE = " TEXT";
     private static final String INTEGER_TYPE = " INTEGER";
@@ -34,8 +36,8 @@ public class BoardgamesDBHelper extends SQLiteOpenHelper {
     private static final String SQL_CREATE_ENTRIES =
             "CREATE TABLE " + TABLE_NAME + " (" +
                     COLUMN_ID + " INTEGER PRIMARY KEY," +
-                    COLUMN_NAME +        TEXT_TYPE + "NOT NULL UNIQUE" +     COMMA_SEP +
-                    COLUMN_WISH_LEVEL +  INTEGER_TYPE + "NOT NULL" +         COMMA_SEP +
+                    COLUMN_NAME +        TEXT_TYPE + " NOT NULL UNIQUE" +     COMMA_SEP +
+                    COLUMN_WISH_LEVEL +  INTEGER_TYPE + " NOT NULL" +         COMMA_SEP +
                     COLUMN_SCORE +       REAL_TYPE +                         COMMA_SEP +
                     COLUMN_CATEGORIES +  TEXT_TYPE +                         COMMA_SEP +
                     COLUMN_MIN_PLAYERS + INTEGER_TYPE +                      COMMA_SEP +
@@ -46,7 +48,7 @@ public class BoardgamesDBHelper extends SQLiteOpenHelper {
             "DROP TABLE IF EXISTS " + TABLE_NAME;
 
     // If you change the database schema, you must increment the database version.
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 3;
     public static final String DATABASE_NAME = "Boardgames.db";
 
     public BoardgamesDBHelper(Context context) {
@@ -104,9 +106,9 @@ public class BoardgamesDBHelper extends SQLiteOpenHelper {
         // Build query
         Cursor cursor =
                 db.query(TABLE_NAME, // a. table
-                        COLUMNS_ALL, // b. column names
-                        " id = ?", // c. selections
-                        new String[]{String.valueOf(id)}, // d. selections args
+                        COLUMNS_ALL_BUT_ID, // b. column names
+                        " id = " +  Integer.toString(id), // c. selections
+                        null, // d. selections args
                         null, // e. group by
                         null, // f. having
                         null, // g. order by
@@ -135,9 +137,9 @@ public class BoardgamesDBHelper extends SQLiteOpenHelper {
      *
      * @return
      */
-    public List<String> getAllGamesNames()
+    public List<Boardgame> getAllGames()
     {
-        List<String> array_list = new ArrayList<String>();
+        List<Boardgame> array_list = new ArrayList<Boardgame>();
 
         // Build the query
         String query = "SELECT  * FROM " + TABLE_NAME;
@@ -146,9 +148,15 @@ public class BoardgamesDBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
 
+        String name;
+        int stars;
+
         if (cursor.moveToFirst()) {
             do {
-                array_list.add(cursor.getString(1));
+                name = cursor.getString(1);
+                stars = cursor.getInt(2);
+
+                array_list.add(new Boardgame(name, stars));
             } while (cursor.moveToNext());
         }
 

@@ -20,7 +20,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class MainScreen extends AppCompatActivity {
-    public final static String EXTRA_MESSAGE = "david_abad.boardgameswishlist.MESSAGE";
+    public final static String EXTRA_ID = "david_abad.boardgameswishlist.ID";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,10 +45,15 @@ public class MainScreen extends AppCompatActivity {
 
         // Refresh boardgames list
         BoardgamesDBHelper db = new BoardgamesDBHelper(this);
-        List<String> boardgames = db.getAllGamesNames();
+        List<Boardgame> boardgames = db.getAllGames();
+        List<String> names = new ArrayList<String>();
+
+        for (int i = 0; i < boardgames.size(); i++){
+            names.add(boardgames.get(i).getName());
+        }
 
         // Create an array adapter
-        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, boardgames);
+        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, names);
 
         // Create a ListView object
         ListView listView = (ListView) findViewById(R.id.gameslist);
@@ -60,6 +65,9 @@ public class MainScreen extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 Intent intent = new Intent(MainScreen.this, BoardGameDetails.class);
+
+                intent.putExtra(EXTRA_ID, id+1);
+
                 startActivity(intent);
             }
         });
