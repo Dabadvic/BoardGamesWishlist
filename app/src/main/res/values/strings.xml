@@ -10,4 +10,5 @@
     <string name="action_about">About</string>
     <string name="title_activity_board_game_details">Board game details</string>
     <string name="wish_details">You want it...</string>
+    <string name="delete_game">Delete</string>
 </resources>

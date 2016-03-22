@@ -26,8 +26,6 @@ public class BoardgamesDBHelper extends SQLiteOpenHelper {
     private static final String[] COLUMNS_BASIC = {COLUMN_ID,COLUMN_NAME,COLUMN_WISH_LEVEL};
     private static final String[] COLUMNS_ALL = {COLUMN_ID,COLUMN_NAME,COLUMN_WISH_LEVEL,
             COLUMN_SCORE,COLUMN_CATEGORIES,COLUMN_MIN_PLAYERS,COLUMN_OWN};
-    private static final String[] COLUMNS_ALL_BUT_ID = {COLUMN_NAME,COLUMN_WISH_LEVEL,
-            COLUMN_SCORE,COLUMN_CATEGORIES,COLUMN_MIN_PLAYERS,COLUMN_OWN};
 
     private static final String TEXT_TYPE = " TEXT";
     private static final String INTEGER_TYPE = " INTEGER";
@@ -75,7 +73,7 @@ public class BoardgamesDBHelper extends SQLiteOpenHelper {
      */
     public boolean addBoardgame(Boardgame game) {
         //for logging
-        Log.d("addBook", game.toString());
+        Log.d("addBoardGame", game.toString());
 
         // Gets the data repository in write mode
         SQLiteDatabase db = this.getWritableDatabase();
@@ -106,7 +104,7 @@ public class BoardgamesDBHelper extends SQLiteOpenHelper {
         // Build query
         Cursor cursor =
                 db.query(TABLE_NAME, // a. table
-                        COLUMNS_ALL_BUT_ID, // b. column names
+                        COLUMNS_ALL, // b. column names
                         " id = " +  Integer.toString(id), // c. selections
                         null, // d. selections args
                         null, // e. group by
@@ -119,12 +117,13 @@ public class BoardgamesDBHelper extends SQLiteOpenHelper {
             cursor.moveToFirst();
 
         // Build boardgame object
-        Boardgame game = new Boardgame( cursor.getString(0),    // name
-                                        cursor.getInt(1),       // wish level
-                                (float) cursor.getLong(2),      // rating
-                                        cursor.getString(3),    // categories
-                                        cursor.getInt(4),       // minimum players
-                                        cursor.getInt(5) == 1 ? true : false); // own
+        Boardgame game = new Boardgame( cursor.getInt(0),       // id
+                                        cursor.getString(1),    // name
+                                        cursor.getInt(2),       // wish level
+                                (float) cursor.getLong(3),      // rating
+                                        cursor.getString(4),    // categories
+                                        cursor.getInt(5),       // minimum players
+                                        cursor.getInt(6) == 1 ? true : false); // own
 
         //log
         Log.d("getBoardgame("+id+")", game.toString());
@@ -150,17 +149,36 @@ public class BoardgamesDBHelper extends SQLiteOpenHelper {
 
         String name;
         int stars;
+        int id;
 
         if (cursor.moveToFirst()) {
             do {
+                id = cursor.getInt(0);
                 name = cursor.getString(1);
                 stars = cursor.getInt(2);
 
-                array_list.add(new Boardgame(name, stars));
+                array_list.add(new Boardgame(id, name, stars));
             } while (cursor.moveToNext());
         }
 
         return array_list;
+    }
+
+    // Deleting single board game, receiving an ID
+    public void deleteBoardGame(int game_id) {
+
+        // 1. get reference to writable DB
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // 2. delete
+        db.delete(TABLE_NAME,
+                COLUMN_ID + " = " + Integer.toString(game_id),
+                null);
+
+        // 3. close
+        db.close();
+
+        Log.d("deleteBoardGame id", Integer.toString(game_id));
     }
 
 }

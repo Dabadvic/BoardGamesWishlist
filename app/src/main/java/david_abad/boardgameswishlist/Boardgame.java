@@ -10,6 +10,7 @@ import java.util.List;
  * Created by david on 18/03/2016.
  */
 public class Boardgame {
+    private int id; //ID for the database
     private String name;
     private int wish_level;
     private float score;
@@ -78,6 +79,49 @@ public class Boardgame {
         }
     }
 
+    /**
+     * Constructor with the basic info necessary for creating a new boardgame, plus ID.
+     *
+     * @param _id
+     * @param _name
+     * @param _wish_level
+     */
+    public Boardgame(int _id, String _name, int _wish_level) {
+        id = _id;
+        name = _name;
+        wish_level = _wish_level;
+        score = 0;
+        categories = null;
+        min_players = 0;
+        own = false;
+    }
+
+    /**
+     * Complete constructor providing all the information for a boardgame, plus ID.
+     *
+     * @param _name
+     * @param _wish_level
+     * @param _score
+     * @param _categories
+     * @param _min_players
+     * @param _own
+     */
+    public Boardgame(int _id, String _name, int _wish_level, float _score, String _categories, int _min_players, boolean _own) {
+        id = _id;
+        name = _name;
+        wish_level = _wish_level;
+        score = _score;
+        min_players = _min_players;
+        own = _own;
+
+        // Extract the categories if not null
+        if (_categories != null) {
+            categories = Arrays.asList(_categories.split(","));
+        } else {
+            categories = null;
+        }
+    }
+
 
     public String getName() {
         return name;
@@ -121,5 +165,9 @@ public class Boardgame {
         line = "Name: " + name + ", wish: " + wish_level;
 
         return line;
+    }
+
+    public int getId() {
+        return id;
     }
 }
